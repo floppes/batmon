@@ -13,7 +13,7 @@ Dispmanx is used to create a layer on the screen where the battey icon is displa
 1. `cd ~`
 2. `git clone https://github.com/AndrewFromMelbourne/raspidmx.git`
 3. `cd raspidmx`
-4. `make
+4. `make`
 5. `sudo cp /home/pi/raspidmx/lib/libraspidmx.so.1 /usr/lib`
 
 ### batmon ###
