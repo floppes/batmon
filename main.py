@@ -2,21 +2,24 @@
 
 import RPi.GPIO as GPIO
 import time
-import os
 import signal
 import datetime
-from subprocess import check_output
+import os
+from subprocess import check_output, call, Popen
 from config import *
 from mcp3551 import MCP3551
 from mcp3001 import MCP3001
 from mcp3008 import MCP3008
 
+def draw_icon(layer, icon):
+	Popen(PNGVIEWPATH + "/pngview -b 0 -l " + layer + " -x " + str(ICONX) + " -y " + str(ICONY) + " " + ICONPATH + "/" + icon + " &", cwd=os.path.dirname(os.path.realpath(__file__)), shell=True)
+
 def change_icon(percent):
 	if (ICON != 1):
 		return
 
-	os.system(PNGVIEWPATH + "/pngview -b 0 -l 3000" + percent + " -x " + str(ICONX) + " -y " + str(ICONY) + " " + ICONPATH + "/battery" + percent + ".png &")
-	
+	draw_icon("3000" + percent, "battery" + percent + ".png")
+
 	if (DEBUGMSG == 1):
 		print("Changed battery icon to " + percent + "%")
 	
@@ -27,7 +30,7 @@ def change_icon(percent):
 	for num in nums:
 		i += 1
 		if (i == 1):
-			os.system("sudo kill " + num)
+			call("sudo kill " + num, shell=True)
 
 def change_led(led):
 	if (LEDS != 1):
@@ -46,7 +49,7 @@ def change_led(led):
 
 def end_process(signalnum = None, handler = None):
 	GPIO.cleanup()
-	os.system("sudo killall pngview");
+	call("sudo killall pngview", shell=True);
 	exit(0)
 
 status = 0
@@ -100,7 +103,7 @@ if (LEDS == 1):
 	GPIO.output(GOODVOLTPIN, GPIO.LOW)
 	GPIO.output(LOWVOLTPIN, GPIO.LOW)
 
-os.system(PNGVIEWPATH + "/pngview -b 0 -l 299999 -x " + str(ICONX) + " -y " + str(ICONY) + " " + ICONPATH + "/blank.png &")
+draw_icon("299999", "blank.png")
 
 count = 0
 
