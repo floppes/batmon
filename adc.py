@@ -8,15 +8,15 @@ class ADC:
 		self._mosi = mosi
 		self._clk = clk
 		self._cs = cs
-		
+
 	@abstractmethod
 	def get_resolution(self):
 		pass
-		
+
 	@abstractmethod
 	def setup_pins(self):
 		pass
-		
+
 	@abstractmethod
 	def read_value(self):
 		pass

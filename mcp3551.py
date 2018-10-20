@@ -8,14 +8,14 @@ class MCP3551(ADC):
 	def setup_pins(self):
 		GPIO.setmode(GPIO.BOARD)
 		GPIO.setwarnings(False)
-		
+
 		GPIO.setup(self._miso, GPIO.IN)
 		GPIO.setup(self._clk, GPIO.OUT)
 		GPIO.setup(self._cs, GPIO.OUT)
 
 	def get_resolution(self):
 		return 2097152.0
-		
+
 	def read_value(self):
 		GPIO.output(self._cs, True)
 		GPIO.output(self._clk, True)
@@ -44,7 +44,7 @@ class MCP3551(ADC):
 			GPIO.output(self._clk, True)
 
 			adcraw <<= 1
-			
+
 			if (GPIO.input(self._miso)):
 				adcraw |= 0x1
 
@@ -53,15 +53,15 @@ class MCP3551(ADC):
 
 		if (adcraw & 0x400000):
 			print "MCP3551 error: overflow high"
-			
+
 		if (adcraw & 0x800000):
 			print "MCP3551 error: overflow low"
-		
+
 		# remove overflow and sign bits
 		adcout = adcraw & 0x1FFFFF
-		
+
 		# convert to negative number if necessary
 		if (adcraw & 0x200000):
 			adcout = (~adcout & 0x1FFFFF) * -1 + 1
-		
+
 		return adcout

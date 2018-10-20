@@ -22,11 +22,11 @@ def change_icon(percent):
 
 	if (DEBUGMSG == 1):
 		print("Changed battery icon to " + percent + "%")
-	
+
 	out = check_output("ps aux | grep pngview | awk '{ print $2 }'", shell=True)
 	nums = out.split('\n')
 	i = 0
-	
+
 	for num in nums:
 		i += 1
 		if (i == 1):
@@ -39,12 +39,12 @@ def change_led(led):
 	if (led == "green"):
 		GPIO.output(GOODVOLTPIN, GPIO.HIGH)
 		GPIO.output(LOWVOLTPIN, GPIO.LOW)
-		
+
 		printf("Changed green LED to on, red LED to off")
 	elif (led == "red"):
 		GPIO.output(GOODVOLTPIN, GPIO.LOW)
 		GPIO.output(LOWVOLTPIN, GPIO.HIGH)
-		
+
 		printf("Changed green LED to off, red LED to on")
 
 def end_process(signalnum = None, handler = None):
@@ -53,7 +53,7 @@ def end_process(signalnum = None, handler = None):
 	exit(0)
 
 status = 0
-	
+
 # prepare handlers for process exit
 signal.signal(signal.SIGTERM, end_process)
 signal.signal(signal.SIGINT, end_process)
@@ -68,7 +68,7 @@ elif (ADC == "MCP3008"):
 else:
 	print("Unknown ADC type " + str(ADC) + "! Please set ADC in config.py to one of the supported types.")
 	exit(0)
-	
+
 adc.setup_pins()
 
 SVOLT100 = VOLT100 * HIGHRESVAL / (LOWRESVAL + HIGHRESVAL)
@@ -82,7 +82,7 @@ ADC75 = SVOLT75 / (ADCVREF / adc.get_resolution())
 ADC50 = SVOLT50 / (ADCVREF / adc.get_resolution())
 ADC25 = SVOLT25 / (ADCVREF / adc.get_resolution())
 ADC0 = SVOLT0 / (ADCVREF / adc.get_resolution())
-	
+
 if (DEBUGMSG == 1):
 	print("Batteries 100% voltage:		" + str(VOLT100))
 	print("Batteries 75% voltage:		" + str(VOLT75))
@@ -117,13 +117,13 @@ while True:
 	ret3 = adc.read_value()
 	ret = (ret1 + ret2 + ret3) / 3
 	voltage = ((HIGHRESVAL + LOWRESVAL) * ret * (ADCVREF / adc.get_resolution())) / HIGHRESVAL
-	
+
 	if (CSVOUT == 1):
 		print(str(count) + ";" + str(time.time()) + ";" + str(datetime.datetime.now()) + ";" + str(ret) + ";" + str(voltage))
-	
+
 	if (DEBUGMSG == 1):
 		print("ADC value: " + str(ret) + " (" + str(voltage) + " V)")
- 
+
 	if (ret < ADC0):
 		if (status != 0):
 			change_icon("0")
@@ -140,7 +140,7 @@ while True:
 		if (status != 50):
 			change_led("green")
 			change_icon("50")
-			
+
 		status = 50
 	elif (ret < ADC75):
 		if (status != 75):
