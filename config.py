@@ -17,16 +17,16 @@ ICONX = 460
 ICONY = 5
 
 # ADC type (MCP3001, MCP3008 or MCP3551)
-ADC = "MCP3551"
+ADC = "MCP3001"
 
-# ADC channel to use (from 0 to 7, only for MCP3008)
+# ADC channel to use (from 0 to 7, only relevant for MCP3008)
 ADCCHANNEL = 0
 
 # ADC SPI pins (BOARD numbering scheme)
 SPIMISO = 38
 SPIMOSI = 37
-SPICLK = 36
-SPICS = 40
+SPICLK = 40
+SPICS = 36
 
 # GPIO pins for good voltage and low voltage LEDs (BOARD numbering scheme)
 GOODVOLTPIN = 18
